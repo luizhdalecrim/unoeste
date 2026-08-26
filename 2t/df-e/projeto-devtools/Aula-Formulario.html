@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8"/>
+    <title>Aula de Formulários</title>
+    <style type="text/css">
+      input,button{background-color: #B0E0E6;
+           font: 12px verdana, arial, helvetica, sans-serif;
+           color:#003399;
+           border:2px solid #000099;}
+      select{background-color: #B0E0E6;
+            font:12px verdana, arial, helvetica, sans-serif;
+            color:#003399;}
+      label{font-weight:bold;color:darkgray;}
+      .cssvalida:invalid{background-color:red;color:white;}
+    </style>
+    <script language="Javascript">
+      function bemvindo(texto){
+        alert("Obrigada por acessar nossa página! "+texto);
+      }
+    </script>
+</head>
+<body onload="bemvindo('Aula de APII')">
+  <section>
+    <h1>Cadastro - Perfil de Cliente</h1>
+    <hr/>
+    <form name="FCadCliente" id="FCadCliente" action="pagina.jsp" method="post">
+      <label for="tnome">Nome do Cliente:</label><br/>
+      <input type="text" id="tnome" size="40" maxlength="30" placeholder="Informe o nome do Cliente..." autofocus="true" required="required" class="cssvalida"/>
+      
+      <br/>
+      <label for="tsenha">Senha de acesso:</label><br/>
+      <input type="password" id="tsenha" size="10" maxlength="8"/>
+      
+      <br/>
+      <label for="oplazer1">Opções de lazer:</label><br/>
+      <input type="checkbox" id="oplazer1" value="1" checked="checked"/>
+        <label for="oplazer1">Assistir filmes</label><br/>
+      <input type="checkbox" id="oplazer2" value="2"/>
+        <label for="oplazer2">Assistir Séries</label><br/>
+      <input type="checkbox" id="oplazer3" value="3"/>
+        <label for="oplazer3">Estudar</label>
+        
+      <br/><br/>
+      <label for="estcivil">Estado Civil:</label><br/>
+      <input type="radio" id="estcivil" name="estadoc" value="S"/>
+       <label for="estcivil">Solteiro</label><br/>
+      <input type="radio" id="estcivil2" name="estadoc" value="C"/>
+       <label for="estcivil2">Casado</label>
+       <br/><br/>
+       <label for="farq">Selecione sua foto:</label><br/>
+       <input type="file" id="farq" size="40"/>
+       
+       <!---Caixa de seleção-->
+       <br/><br/>
+       <label for="scidade">Cidade:</label><br/>
+       <select id="scidade">
+        <option value="1">Presidente Prudente</option>
+        <option value="2">Taciba</option>
+        <option value="3" selected="selected">Flórida Paulista</option>
+        <option value="4">Mirante</option>
+       </select>
+       
+       <!---Lista de seleção-->
+       <br/><br/>
+       <label for="scidade">Cidade:</label><br/>
+       <select id="scidade" size="3" multiple="multiple">
+        <option value="1">Presidente Prudente</option>
+        <option value="2">Taciba</option>
+        <option value="3" selected="selected">Flórida Paulista</option>
+        <option value="4">Mirante</option>
+       </select>
+       
+       <br/><br/>
+       <label for="tsugestao">Deixe sua sugestão:</label><br/>
+       <textarea id="tsugestao" cols="45" rows="10" placeholder="Texto..."></textarea>
+       <br/>
+       
+       <br/>
+       <label for="spesq">Assuntos a serem pesquisados:</label><br/>
+       <input type="search" id="spesq" size="40" placeholder="Palavras chaves..."/>
+       
+       <br/><br/>
+       <label for="tfone">Telefone:</label><br/>
+       <input type="tel" id="tfone" size="40" pattern="\(\d{2}\)\s\d{5}-\d{4}" title="(99) 99999-9999" placeholder="(99) 99999-9999"/>
+       
+       <br/><br/>
+        <label for="tsite">Site:</label><br/>
+        <input type="url" id="tsite" size="40"/>
+        
+         <br/><br/>
+        <label for="temail">e-mail:</label><br/>
+        <input type="email" id="temail" size="40"/>
+        
+        <br/><br/>
+        <label for="tdata">Data:</label><br/>
+        <input type="date" id="tdata"/>
+        
+        <br/><br/>
+        <label for="tsemana">Semana:</label><br/>
+        <input type="week" id="tsemana"/>
+        
+        <br/><br/>
+        <label for="tnum">Código:</label><br/>
+        <input type="number" id="tnum"/>
+        
+        <br/><br/>
+        <label for="tintervalo">Intervalo:</label><br/>
+        <input type="range" id="titervalo" min="5" max="15" step="1"/>
+        
+        <br/><br/>
+        <label for="tcor">Cor:</label><br/>
+        <input type="color" id="tcor"/>
+        
+        <br/><br/>
+        <label for="tlist">Conteúdos:</label><br/>
+        <input type="text" id="tlist" list="descolha"/>
+        <datalist id="descolha">
+          <option value="HTML"></option>
+          <option value="XHTML"></option>
+          <option value="HTML5"></option>
+           <option value="CSS"></option>
+        </datalist>
+        
+      <!---botão-->
+       <br/><br/>
+       <input type="button" id="btestar" value="Testar" onclick="alert('Testando o evento do botão!')"/>
+       <input type="reset" id="blimpar" value="Limpar"/>
+       <input type="submit" id="bgravar" value="Gravar"/>
+       <button type="button" id="bclicar" onclick="alert('Me clique!')"><img src="setaazul.gif" alt="seta"/>  Me clique!</button>
+    </form>
+  </section>
+</body>
+</html>
