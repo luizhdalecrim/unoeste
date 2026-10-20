@@ -58,6 +58,9 @@ int remove_fila() {
 		v = fila[inicio];
 		inicio++;
 		
+		if (inicio > fim)
+			cria_fila();
+		
 		return v;
 	}
 	else {
