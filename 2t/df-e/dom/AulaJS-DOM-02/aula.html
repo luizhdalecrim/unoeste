@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula DOM - Vinculação de Eventos durante a execução</title>
+    <style>
+        * {
+            font-family: calibri;
+        }
+    </style>
+    <script>
+        function funcJS() {
+            alert('Esta função vai ficar fixa em um elemento HTML, no caso está vinculada a um botão...');
+        }
+        function mensagem() {
+            alert('Associando evento!!');
+        }
+
+
+        function mensagem2() {
+            alert('Associando eventos antes da página ser carregada');
+        }
+        /*FORMA 3 - que ocorre antes de finalizar o carregamento da página e o elemento ser exibido para o usuário*/
+        document.addEventListener('DOMContentLoaded', function () {
+            let vetLinks = document.querySelectorAll('a');
+            for (let i = 0; i < vetLinks.length; i++) {
+                vetLinks[i].addEventListener('click', mensagem2, false);
+            }
+        }, false)
+
+        function enviardados() {
+            var nome = document.querySelector("#tx_nome");
+            var email = document.querySelector("#tx_email");
+            nome.style.border = "solid 1px black";
+            nome.setAttribute('placeholder', '');
+            email.style.border = "solid 1px black";
+            email.setAttribute('placeholder', '');
+            var correto = true;
+            if (nome.value.length < 8) {
+                nome.value = "";
+                nome.setAttribute('placeholder', 'Preencha NOME corretamente!');
+                nome.style.border = "solid 2px red";
+                correto = false;
+            }
+            //var atpos = email.value.indexOf("@");
+            //var dotpos = email.value.lastIndexOf(".");
+            //if (atpos < 1 || dotpos < atpos + 2 || dotpos + 2 >= email.length) {
+            var regEx = new RegExp(/^(\w+[\-\.])*\w+@(\w+\.)+[A-Za-z]+$/); 
+            if (! regEx.test(email.value)){
+                email.value = "";
+                email.setAttribute('placeholder', 'Preencha um E-MAIL correto!');
+                email.style.border = "solid 2px red";
+                correto = false;
+            }
+            // return correto;
+            if (correto){
+                alert(nome.value+' sua mensagem foi enviada com sucesso!! Logo entraremos em contato')
+                nome.value='';
+                email.value='';
+            }
+            else
+              alert('Verifique seus dados...');
+
+
+              
+
+        }
+
+    </script>
+</head>
+
+<body>
+    <form id="cadastro">
+        <label for="tx_nome">Nome: </label><br />
+        <input id="tx_nome" type="text" size="52" /> <br />
+        <label for="tx_email">E-mail: </label><br />
+        <input id="tx_email" type="text" size="52" /><br />
+        <label for="tx_email">Mensagem: </label><br />
+        <textarea id="tx_mensagem" cols="52" rows="8"></textarea><br />
+        <input id="Enviar" type="button" value="Enviar dados" onclick="enviardados()" />
+    </form>
+
+    <hr>
+    <h1>Aula DOM - Vinculação de Eventos durante a execução</h1>
+    <hr>
+    <h2>Testando Eventos Fixos</h2>
+    <input type="button" value="Eventos Fixos" onclick="funcJS()">
+    <hr>
+    <h2>Testando Eventos em elementos que já existem </h2>
+    <p id="frase">Estudo sobre o modelo de gestão proposto e desenvolvido no Programa de Educação Integral (PEI) resulta
+        em importante oferta de contribuição social, ao revelar avanços e limitações e propor novo olhar, mais
+        abrangente e mais humanizado.</p>
+    <p id="frase2">Estudo sobre o modelo de gestão proposto e desenvolvido no Programa de Educação Integral (PEI)
+        resulta em importante oferta de contribuição social, ao revelar avanços e limitações e propor novo olhar, mais
+        abrangente e mais humanizado.</p>
+    <div id="divCursos">
+        <h3>BCC</h3>
+        <h3>BSI</h3>
+        <h4> - Prof. Chico</h4>
+        <h4> - Prof. Wagner</h4>
+        <h3>ADS</h3>
+        <h4> - Profa. Cássia</h4>
+        <h4> - Prof. Wagner</h4>
+    </div>
+    <hr>
+    <h2>Testando Eventos em elementos que ainda não foram renderizados </h2>
+    <div>
+        <ul>
+            <li><a href="#" id="link1">Unoeste</a></li>
+            <li><a href="#" id="link2">FIPP</a></li>
+            <li><a href="#" id="link3">ADS</a></li>
+            <li><a href="#" id="link4">BSI</a></li>
+        </ul>
+    </div>
+    <hr>
+
+</body>
+<script>
+    /*FORMA 1 - para associar eventos em tempo de execução a um elemento HTML, a busca pelo elemento deve estar após a criação dele na parte do <body>, então código fonte do Javascript deve estar após a seção <body> */
+    var parag = document.querySelector('#frase');
+    parag.onclick = mensagem;
+
+    /*FORMA 2 - aqui o evento será associado usando o método addEventListener, o funcionamento será similar ao da FORMA 1*/
+    var parag2 = document.querySelector('#frase2');
+    parag2.addEventListener('click', mensagem, false);
+
+    //Usando a FORMA 2
+    var divCur = document.querySelector('#divCursos');
+    var vetH3 = divCur.querySelectorAll('h3');
+    for (let i = 0; i < vetH3.length; i++)
+        vetH3[i].addEventListener('click', mensagem, false);
+
+    var vetH4 = divCur.querySelectorAll('h4');
+    for (let i = 0; i < vetH4.length; i++)
+        vetH4[i].addEventListener('click', function () {
+            vetH4[i].textContent = '<h4> alterado!!'
+        }, false)
+
+</script>
+
+</html>
