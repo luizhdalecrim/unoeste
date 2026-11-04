@@ -1,0 +1,169 @@
+#include <stdio.h>
+#include <string.h>
+#include <windows.h>
+#include <ctype.h>
+
+typedef struct{
+	int d,m,a;
+} DATA;
+
+typedef struct{
+	char nome[60];
+	char fone[15];
+	char email[40];
+	DATA aniv;
+} CONTATO;
+
+int menu()
+{
+	int opc;
+	printf("\n1 - Inserir ");
+	printf("\n2 - Exibir");
+	printf("\n3 - Alterar");
+	printf("\n4 - Excluir");
+	printf("\n5 - Sair");
+	printf("\nInforme a opcao desejada: ");
+	scanf("%d",&opc);
+	
+	return opc;
+}
+
+int busca(FILE *arquivo, char nome[])
+{
+	CONTATO ctt;
+	
+	rewind(arquivo);
+	fread(&ctt, sizeof(CONTATO), 1, arquivo);
+	while(!feof(arquivo) && stricmp(nome, ctt.nome)!= 0)
+	{
+		fread(&ctt, sizeof(CONTATO), 1, arquivo);
+	}
+	if(!feof(arquivo))
+	   return (ftell(arquivo) - sizeof(CONTATO));
+	else
+	  return -1;   
+}
+
+void inserir()
+{
+	FILE *arquivo;
+	CONTATO ctt;
+	int pos;
+	arquivo = fopen("agenda.bin", "ab+");
+	if(arquivo == NULL)
+	  printf("Erro no arquivo");
+	else
+	{
+		do
+		{
+			system("cls");
+			printf("\nNome: "); fflush(stdin);
+			gets(ctt.nome);
+			pos = busca(arquivo, ctt.nome);
+			if(pos == -1) // Não achou
+			{
+				printf("\nTelefone: "); fflush(stdin);
+				gets(ctt.fone);
+				printf("\nE-mail: "); fflush(stdin);
+				gets(ctt.email);
+				printf("Aniversario (dd mm aaaa): ");
+				scanf("%d%d%d", &ctt.aniv.d, &ctt.aniv.m, &ctt.aniv.a);
+				fwrite(&ctt, sizeof(CONTATO), 1, arquivo);
+			}
+			else
+			{
+				fseek(arquivo, pos, 0);
+				fread(&ctt, sizeof(CONTATO), 1, arquivo);
+				printf("\n %s ja esta cadastrad(a)o na agenda", ctt.nome);
+				system("pause");
+			}
+			system("cls");
+			printf("\nDeseja continuar S/N? ");
+		}while(toupper(getche()) == 'S');
+		fclose(arquivo);
+	}  
+}
+
+void exibir()
+{
+	FILE *arquivo;
+	CONTATO ctt;
+	arquivo = fopen("agenda.bin", "rb");
+	if(arquivo == NULL)
+	   printf("Erro no arquivo");
+	else
+	{
+		system("cls");
+		while(fread(&ctt, sizeof(CONTATO), 1, arquivo) == 1)
+		{
+			printf("\nNome %s", ctt.nome);
+			printf("\nTelefone %s", ctt.fone);
+			printf("\nE-mail %s", ctt.email);
+			printf("\nAniversario %d/%d/%d", ctt.aniv.d, ctt.aniv.m, ctt.aniv.a);
+			printf("\n_________________________");
+			printf("\n");
+		}
+	} 
+	fclose(arquivo);
+	system("pause");
+	system("cls");  
+}
+
+void alterar() {
+	CONTATO ctt;
+	int pos, op;
+	FILE *arquivo;
+	arquivo = fopen("rb+", "agenda.bin");
+	system("cls");
+	printf("\nAlterar pelo nome");
+	printf("\nNome: ");
+	fflush(stdin);
+	gets(ctt.nome);
+	
+	while(stricmp(ctt.nome, "") != 0) {
+		pos = busca(arquivo, ctt.nome);
+		if(pos == -1) {
+			printf("\nNao cadastrado!");
+		}
+		else {
+			fseek(arquivo, pos, 0);
+			fread(&ctt, sizeof(CONTATO), 1, arquivo);
+			printf("\n1. Nome: %s", ctt.nome);
+			printf("\n1. Tel.: %s", ctt.fone);
+			printf("\n1. Email: %s", ctt.email);
+			
+		}
+	}
+	
+}
+
+int main(void)
+{
+	int op;
+	do
+	{
+		op = menu();
+		switch(op)
+		{
+			case 1:
+				inserir();
+			    break;
+			case 2:
+				exibir();
+			    break;
+		    case 3:
+				alterar();		      
+		        break;
+		    case 4:
+				//excluir();     
+		         break;
+		    case 5:
+				printf("\nEncerrando a agenda...");
+			    break;
+		    default:
+				printf("\nOpcao invalida!");		      
+		}
+	} while(op != 5);
+	
+	return 0;
+}
